@@ -1,0 +1,17 @@
+/start.do
+
+
+# ignore all folders beginning with period (but include .* files)
+.*/
+
+
+# Log files & directories
+*.smcl
+*.log
+logs/
+
+
+# UE project files, macros, etc.
+*.prj
+*.pui
+*.mac
