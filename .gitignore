@@ -1,7 +1,10 @@
-/start.do
+# ignore convenience 'start.do' file
+/start.do  
+    # opens helpfile in viewer & runs/logs examples from helpfile
 
 
-# ignore all folders beginning with period (but include .* files)
+# ignore all folders beginning with period 
+# (but include files beginning with period; otherwise use ".*" )
 .*/
 
 

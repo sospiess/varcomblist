@@ -17,8 +17,8 @@
 {...}
 {...}
 {...}
-{bf:varcomblist} {hline 2} Create pairwise combinations of (affixed) variable lists
-               (community-contributed, see also {browse "https://github.com/sospiess/varcomblist":GitHub repository})
+{bf:varcomblist} {hline 2} Create pairwise combinations of variables
+               (community-contributed, {browse "https://github.com/sospiess/varcomblist":view GitHub repository})
 
 
 {marker syntax}{...}
@@ -33,28 +33,26 @@
 {synopthdr}
 {synoptline}
 {syntab:Main}
-{synopt:{opt g:enerate}}create interaction variables for pairs formed by 
-varlist; if specified varlist must contain only numeric variables{p_end}
-{synopt:{opt interact:ion(string)}}specify interaction operator in names of 
-generated variables; default is "X"{p_end}
+{synopt:{opt g:enerate}}generate variables for interactions of variable pairs; if specified {varlist} must contain only numeric variables{p_end}
+{synopt:{opt gendel:imiter(string)}}use {it:string} as delimiter between original variable names when option {opt generate} is specified; default is "X"{p_end}
 
-{synopt:{opt l:ocal(macname)}}insert the list of pairs in the local macro 
-{it:macname}{p_end}
+{synopt:{opt l:ocal(macname)}}insert the list of variable pairs in the local 
+macro {it:macname}{p_end}
 
 {syntab:Variables}
-{synopt:{opt varsep:arator(string)}}insert specified string between variables; default is asterisk "*"{p_end}
-{synopt:{opt varpre:fix(stub1 [stub2])}}prefix first variable in pair with {it:stub1}; second with {it:stub1} or optionally {it:stub2}{p_end}
-{synopt:{opt varsuf:fix(stub1 [stub2])}}suffix first variable in pair with {it:stub1}; second with {it:stub1} or optionally {it:stub2}{p_end}
+{synopt:{opt vardel:imiter(string)}}use {it:string} as delimiter between variables within pair; default is "*"{p_end}
+{synopt:{opt varpre:fix(stub1 [stub2])}}prefix first variable in pair with {it:stub1}, second with {it:stub1} or optionally {it:stub2}{p_end}
+{synopt:{opt varsuf:fix(stub1 [stub2])}}suffix first variable in pair with {it:stub1}, second with {it:stub1} or optionally {it:stub2}{p_end}
 
 {syntab:Pairs/combinations}
-{synopt:{opt pairsep:arator(string)}}insert specified string between pairs; default is single space " "{p_end}
-{synopt:{opt pairpre:fix(stub)}}prefix pairs with {it:stub}{p_end}
-{synopt:{opt pairsuf:fix(stub)}}suffix pairs with {it:stub}{p_end}
+{synopt:{opt pairdel:imiter(string)}}use {it:string} as delimiter between pairs; default is " " (space){p_end}
+{synopt:{opt pairpre:fix(stub)}}prefix each pair with {it:stub}{p_end}
+{synopt:{opt pairsuf:fix(stub)}}suffix each pair with {it:stub}{p_end}
 
-{synopt:{opt pairsepa:ll}}shorthand; implies options {opt pairsepfirst} and 
-{opt pairseplast}{p_end}
-{synopt:{opt pairsepf:irst}}add pairseparator before first pair{p_end}
-{synopt:{opt pairsepl:ast}}add pairseparator after last pair{p_end}
+{synopt:{opt pairdelf:irst}}add {opt pairdelimiter} before first pair{p_end}
+{synopt:{opt pairdell:ast}}add {opt pairdelimiter} after last pair{p_end}
+{synopt:{opt pairdela:ll}}shorthand; implies options {opt pairdelfirst} and 
+{opt pairdellast}{p_end}
 {synoptline}
 {p2colreset}{...}
 
@@ -66,12 +64,12 @@ generated variables; default is "X"{p_end}
 of the variables in {varlist}.  For k variables there will accordingly be 
 {it:k!/{2!(k - 2)!}} pairs.
 
-{pstd}The command allows to specifiy how variables within pairs are 
-separated/hyphenated as well as how pairs are separated from one another.  In 
-addition, variables and pairs can be prefixed/suffixed as appropriate.  Thus 
-{cmd:varcomblist} can be useful to create multiple interaction terms for 
-commands not supporting {help fvvarlist:factor variables} or to specify 
-multiple (error) covariances in {help sem_model_options:SEM}, etc.{p_end}
+{pstd}The command allows to specifiy how variables within pairs are delimited 
+as well as how pairs are delimited from one another.  In addition, variables 
+and pairs can be prefixed/suffixed as appropriate.  Thus {cmd:varcomblist} can 
+be useful to create multiple interaction terms for commands not supporting 
+{help fvvarlist:factor variables} or to specify multiple (error) covariances in 
+{help sem_model_options:SEM}, etc.{p_end}
 
 
 {marker options}{...}
@@ -80,34 +78,37 @@ multiple (error) covariances in {help sem_model_options:SEM}, etc.{p_end}
 {dlgtab:Main}
 
 {phang}{opt generate} specifies that in addtion to creating a formatted list 
-of variable pairs, {cmd varcomblist} is to generate all multiplicative 
-interactions formed by the pairs in {varlist}.  Interaction terms are not
-affected by the formatting (i.e. separators and affixes) applied to the list 
-of variable pairs.  If specified, all variables must be 
+of variable pairs, {cmd:varcomblist} also generates new variables containing 
+the product or "interaction" of the variables in each pair.  The generated 
+variables are not affected by any formatting (i.e., delimiters and affixes) 
+applied to the variables or pairs.  If specified, all variables must be 
 {help data_types:numeric}.
 
-{phang}{opt interaction(string)} specifies the string to be used as delimiter 
-for the generated interaction variables.  {it:string} defaults to "X".
+{phang}{opt gendelimiter(string)} specifies the characters to be used as 
+delimiter between the original variable names in the newly generated variables 
+if option {cmd: generate} is also specified.  Accordingly, {it:string} may only 
+contain characters valid in {mansection U 11.3Namingconventions:variable names}.
+  {it:string} defaults to "X".
 
-{phang}{opt local(macname)} inserts the list of pairs in local macro {it:macname} 
-within the calling program's space. Hence, that macro will be accessible after 
-{cmd:varcomblist} has finished.  This is helpful for subsequent use, e.g. with 
-{help foreach} or {cmd: sem {it:paths} ..., covariance(`{it:macname}')}.
+{phang}{opt local(macname)} inserts the formatted list of pairs in local macro 
+{it:macname} within the calling program's space.  Hence, that macro will be 
+accessible after {cmd:varcomblist} has finished.  This is helpful for 
+subsequent use, e.g., with {help foreach} or {cmd: sem {it:paths} ..., covariance(`{it:macname}')}.
 
 {dlgtab:Variables}
 
 {phang}
-{opt varseparator(string)} specifies characters between the variables in each 
-pair.  {it:string} defaults to asterisk, e.g.: {it:var_1}{bf:*}{it:var_2}.{break}
-Useful alternatives might be hyphen ("-"), comma and space (", "), or space (" ").
+{opt vardelimiter(string)} specifies how variables within pairs are delimited.  
+{it:string} defaults to asterisk "*", e.g.: {it:var1}{bf:*}{it:var2}.{break}
+Useful alternatives might be hyphen ("-"), single space (" "), or comma and 
+space (", ").
 
 {phang}
-{opt varprefix(stub1 [stub2])} specifies characters to be placed in front of 
+{opt varprefix(stub1 [stub2])} specifies string(s) to be placed in front of 
 variables.  If one stub is specified, it is placed in front of both variables 
 of the pair; if two stubs are specified, {it:stub1} prefixes the first variable 
 and {it:stub2} prefixes the second variable of each pair.  For instance, use 
-{cmd:varprefix("e.")} to refer to error terms of variables in {cmd:sem} 
-contexts.
+{cmd:varprefix("e.")} to refer to error terms of variables in {help sem:SEM}.
 
 {phang}
 {opt varsuffix(stub1 [stub2])} as above but placed after variables.
@@ -115,8 +116,8 @@ contexts.
 {dlgtab:Pairs/combinations}
 
 {phang}
-{opt pairseparator(string)} specifies characters to be inserted between pairs
-of variables.  {it:string} defaults to single space, e.g.: {it:var_1*var_2 var_1*var_3 ... var_1*var_k}{break}
+{opt pairdelimiter(string)} specifies how pairs of variables are delimited.  
+{it:string} defaults to single space " ", e.g.: {it:var1*var2 var1*var3 var2*var3}{break}
 Useful alternatives might be semicolon and space ("; "), or pipe surrounded by
 spaces (" | ").
 
@@ -128,19 +129,34 @@ opening parenthesis.
 {phang}
 {opt pairsuffix(stub)} as above but placed after pairs.
 
+{phang}
+{opt pairdelfirst} specifies that {it: string} of option 
+{opt pairdelimiter(string)} is also inserted before the first variable pair.  
+By default pairdelimiters are only placed between pairs but omitted at the 
+beginning and the end of the list.
+
+{phang}
+{opt pairdellast} as above but insert {it:string} after the last pair.
+
+{phang}
+{opt pairdelall} is for convenience to easliy specifiy both options 
+{opt pairdelfirst} and {opt pairdellast}.{break}
+For instance, use {cmd:pairdelimit("|") pairdelall} to get a list with all 
+pairs surrounded by pipes: {it:|var1*var2|var1*var3|var2*var3|}
+
 
 {marker examples}{...}
 {title:Examples}
 
-{pstd}Display pairs of variables of interest:{break}
+{pstd}Iterate over pairs of variables of interest:{break}
 {cmd:. sysuse auto}
 
-{pstd}{cmd:. varcomblist price-rep78 trunk-length, pairprefix(`""("') pairsuffix(`")" "')}{break} 
-{cmd:{space 4}varseparator(", ") local(list)}
+{pstd}{cmd:. varcomblist price-mpg t* length, pairprefix(`""("') pairsuffix(`")" "')}{break} 
+{cmd:{space 4}vardelimit(", ") local(list)}
 
 {pstd}{cmd:. local i = 1}{break}
 {cmd:. foreach pair of local list {c -(}}{break}
-{cmd:.{space 8}di "-> pair`i' = `pair'"}{break}
+{cmd:.{space 8}di "-> pair `i' = `pair'"}{break}
 {cmd:.{space 8}local ++i}{break}
 {cmd:. {c )-}}
 
@@ -148,9 +164,9 @@ opening parenthesis.
 {pstd}Estimate the covariance between errors of {it:mpg} and {it:trunk} in {cmd:sem}:{p_end}
 {pstd}{cmd:. sem (mpg <- turn trunk price) (trunk <- length)}{p_end}
 
-{phang}{cmd:. varcomblist mpg trunk, varprefix("e.") local(errcov)}{p_end}
+{phang}{cmd:. varcomblist mpg trunk, varprefix("e.") local(errcov_endog)}{p_end}
 {phang}{cmd:. sem (mpg <- turn trunk price) (trunk <- length),}{break}
-       {cmd:covariance(`errcov')}{p_end}
+       {cmd:covariance(`errcov_endog')}{p_end}
 
 
 {marker results}{...}
@@ -162,7 +178,7 @@ opening parenthesis.
 {synoptset 15 tabbed}{...}
 {p2col 5 15 19 2: Scalars}{p_end}
 {synopt:{cmd:r(k)}}number of variables in varlist{p_end}
-{synopt:{cmd:r(pr)}}number of pairwise combinations of variables in varlist{p_end}
+{synopt:{cmd:r(n_pr)}}number of pairwise combinations of variables in varlist{p_end}
 {p2colreset}{...}
 
 {synoptset 15 tabbed}{...}

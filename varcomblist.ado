@@ -16,9 +16,9 @@ Help:
 
 program define varcomblist, rclass
     version 13
-    syntax varlist(min=2) [, Generate interaction(name) Local(name local) ///
-                             VARDELimiters(str) VARPREfix(str) VARSUFfix(str)  ///
-                             PAIRDELimiters(str) PAIRPREfix(str) PAIRSUFfix(str)  ///
+    syntax varlist(min=2) [, Generate GENDELimiter(name) Local(name local) ///
+                             VARDELimiter(str) VARPREfix(str) VARSUFfix(str)  ///
+                             PAIRDELimiter(str) PAIRPREfix(str) PAIRSUFfix(str)  ///
                              PAIRDELFirst PDFirst  PAIRDELLast PDLast  ///
                              PAIRDELAll PDAll]
 
@@ -36,8 +36,8 @@ program define varcomblist, rclass
     if "`generate'" == "generate" {
         confirm numeric variable `varlist'
 
-        if ("`interaction'"  == "") {
-            local interaction "X"
+        if ("`gendelimiter'"  == "") {
+            local gendelimiter "X"
         }
     }
 
@@ -56,10 +56,10 @@ program define varcomblist, rclass
     }
 
 
-    if (`"`vardelimiters'"' == "") {
+    if (`"`vardelimiter'"' == "") {
         local vdel "*"      // default value
     }
-    else local vdel `"`vardelimiters'"'
+    else local vdel `"`vardelimiter'"'
 
 
     if `vpwords' == 2 {
@@ -85,10 +85,10 @@ program define varcomblist, rclass
 
 
     /* ----- process & set strings for combinations -----*/    
-    if (`"`pairdelimiters'"' == "") {
+    if (`"`pairdelimiter'"' == "") {
         local pdel " "      // default value
     }
-    else local pdel `"`pairdelimiters'"'
+    else local pdel `"`pairdelimiter'"'
 
     local pp `"`pairprefix'"'
     local ps `"`pairsuffix'"'
@@ -117,17 +117,17 @@ program define varcomblist, rclass
                     + `"`ps'`pdel'"'
             }
 
-            else {  // no pairdelimiters after last pair; unless option -psmax-
+            else {  // no pairdelimiter after last pair; unless option -psmax-
                 local plist = `"`plist'"' + `"`pp'"' ///
                     + `"`vp1'`var1'`vs1'`vdel'`vp2'`var2'`vs2'"'  ///
                     + `"`ps'"'
             }
 
             if "`generate'" != "" {
-                confirm new variable `var1'`interaction'`var2'
+                confirm new variable `var1'`gendelimiter'`var2'
                 local v1list    = `"`v1list'"'    + `"`var1'  "'
                 local v2list    = `"`v2list'"'    + `"`var2'  "'
-                local newlist   = `"`newlist'"'   + `"`var1'`interaction'`var2' "'
+                local newlist   = `"`newlist'"'   + `"`var1'`gendelimiter'`var2' "'
                 local interlist = `"`interlist'"' + `"`var1'*`var2' "'
             }
             local ++i
@@ -138,7 +138,7 @@ program define varcomblist, rclass
 
 
     /* ----- return results -----*/    
-    return scalar pr = `combinations'
+    return scalar n_pr = `combinations'
     return scalar k = `vars'
     if "`generate'" != "" return local newlist "`newlist'"
     return local comblist `"`plist'"'
