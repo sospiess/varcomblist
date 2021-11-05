@@ -1,5 +1,4 @@
 v 3
-* version 1.0.0  $TS$  Sven O. Spieß
 d varcomblist pairwise combinations of variables
 d Creates a formatted list of all pairwise combinations of the variables in varlist.
 d by Sven O. Spieß, {&Omega}7
