@@ -1,7 +1,7 @@
 v 3
 d varcomblist pairwise combinations of variables
 d Creates a formatted list of all pairwise combinations of the variables in varlist.
-d by Sven O. Spieﬂ, {&Omega}7
+d by Sven O. Spie√ü, {&Omega}7
 d Support:  s[dot]spiess[at]omegasieben[dot]de
 d After installation, type help {cmd:varcomblist}
 d
@@ -9,3 +9,4 @@ d Distribution-Date: 20211107
 d
 f varcomblist.ado
 f varcomblist.sthlp
+e

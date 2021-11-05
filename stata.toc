@@ -1,6 +1,6 @@
 v 3
 d varcomblist
 d GitHub repository to install the {cmd:varcomblist} command in Stata
-d Sven O. Spieﬂ, {&Omega}7
+d Sven O. Spie√ü, {&Omega}7
 d
 p varcomblist Create (formatted) list of pairwise combinations of variables
