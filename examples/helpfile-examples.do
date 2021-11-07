@@ -1,5 +1,5 @@
 // version ommited on purpose
-// v1.0.0-rc  $TS$  Sven O. Spieﬂ
+// 07nov2021  based on v1.0.0  of the ado- and helpfile, Sven O. Spieﬂ
 
 capture log off
 preserve

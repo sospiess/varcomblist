@@ -1,7 +1,9 @@
 v 3
-d varcomblist pairwise combinations of variables
-d Creates a formatted list of all pairwise combinations of the variables in varlist.
-d by Sven O. Spieß, {&Omega}7
+* last modified: 07nov2021 for version 1.0.0 of the ado-file
+
+d varcomblist Pairwise combinations of variables
+d Create a formatted list of all pairwise combinations of the variables in varlist.
+d by Sven O. Spieß, Omegasieben {c -} Ω7, Augsburg, Germany
 d Support:  s[dot]spiess[at]omegasieben[dot]de
 d After installation, type help {cmd:varcomblist}
 d

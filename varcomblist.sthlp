@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0.0-rc  $TS$  Sven O. Spieß}{...}
+{* *! version 1.0.0  07nov2021  Sven O. Spieß}{...}
 {...}
 {vieweralsosee "[FN] Mathematical functions" "mansection FN Mathematicalfunctions"}{...}
 {vieweralsosee "" "--"}{...}
@@ -193,5 +193,5 @@ specified){p_end}
 {marker author}{...}
 {title:Author}
 
-{pstd}Sven O. Spieß, s[dot]spiess[at]omegasieben[dot]de{break}
-Omegasieben {c -} Ω7, Augsburg, Germany{p_end}
+{pstd}Sven O. Spieß, Omegasieben {c -} Ω7, Augsburg, Germany{break}
+s[dot]spiess[at]omegasieben[dot]de{p_end}

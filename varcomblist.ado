@@ -1,24 +1,19 @@
-*! version 1.0.0-rc  $TS$  Sven O. Spieß
-
+*! version 1.0.0  07nov2021  Sven O. Spieß
 
 /* 
-generates list of all pairwise combinations of varlist,
-e.g. to create interaction terms or conveniently issue covariances across error 
-terms in SEM, etc.
+Create formatted list of all pairwise combinations of varlist.
 
-External dependencies:
-    none
-
-Help:
-    doedit "./varcomblist.sthlp"
+External dependencies: none
 */
 
 
 program define varcomblist, rclass
     version 13
     syntax varlist(min=2) [, Generate GENDELimiter(name) Local(name local) ///
-                             VARDELimiter(str) VARPREfix(str) VARSUFfix(str)  ///
-                             PAIRDELimiter(str) PAIRPREfix(str) PAIRSUFfix(str)  ///
+                             VARPREfix(string) VARSUFfix(string)  ///
+                             VARDELimiter(string)  ///
+                             PAIRPREfix(string) PAIRSUFfix(string)  ///
+                             PAIRDELimiter(string)  ///
                              PAIRDELFirst PDFirst  PAIRDELLast PDLast  ///
                              PAIRDELAll PDAll]
 
@@ -59,26 +54,26 @@ program define varcomblist, rclass
     if (`"`vardelimiter'"' == "") {
         local vdel "*"      // default value
     }
-    else local vdel `"`vardelimiter'"'
+    else local vdel : copy local vardelimiter
 
 
     if `vpwords' == 2 {
-        loval vp1 : word 1 of `varprefix'
-        loval vp2 : word 2 of `varprefix'
+        local vp1 : word 1 of `varprefix'
+        local vp2 : word 2 of `varprefix'
     }
     else{   // fine no matter whether one string or empty
-        local vp1 `"`varprefix'"'
-        local vp2 `"`varprefix'"'
+        local vp1 : copy local varprefix
+        local vp2 : copy local varprefix
     }
 
 
     if `vswords' == 2 {
-        loval vs1 : word 1 of `varsuffix'
-        loval vs2 : word 2 of `varsuffix'
+        local vs1 : word 1 of `varsuffix'
+        local vs2 : word 2 of `varsuffix'
     }
     else{   // fine no matter whether one string or empty
-        local vs1 `"`varsuffix'"'
-        local vs2 `"`varsuffix'"'
+        local vs1 : copy local varsuffix
+        local vs2 : copy local varsuffix
     }
 
 
@@ -88,10 +83,10 @@ program define varcomblist, rclass
     if (`"`pairdelimiter'"' == "") {
         local pdel " "      // default value
     }
-    else local pdel `"`pairdelimiter'"'
+    else local pdel : copy local pairdelimiter
 
-    local pp `"`pairprefix'"'
-    local ps `"`pairsuffix'"'
+    local pp : copy local pairprefix
+    local ps : copy local pairsuffix
 
 
 
@@ -112,16 +107,22 @@ program define varcomblist, rclass
         foreach var2 of local worklist {
 
             if `i' < `combinations' | "`pdlast'" != "" {
-                local plist = `"`plist'"' + `"`pp'"' ///
-                    + `"`vp1'`var1'`vs1'`vdel'`vp2'`var2'`vs2'"'  ///
-                    + `"`ps'`pdel'"'
+                local plist = `"`plist'"' +  ///  list from prev. iterations
+                    `"`pp'"' +  ///  pair prefix
+                    `"`vp1'"' + `"`var1'"' + `"`vs1'"' +  ///  affixed var_1
+                    `"`vdel'"' +  ///  variable delimiter
+                    `"`vp2'"' + `"`var2'"' + `"`vs2'"' +  ///  affixed var_2
+                    `"`ps'"' + `"`pdel'"'  //  pair suffix + pair delimiter
             }
 
-            else {  // no pairdelimiter after last pair; unless option -psmax-
-                local plist = `"`plist'"' + `"`pp'"' ///
-                    + `"`vp1'`var1'`vs1'`vdel'`vp2'`var2'`vs2'"'  ///
-                    + `"`ps'"'
-            }
+            else {  // no pairdelimiter after last pair; unless option -pairdellast-
+                local plist = `"`plist'"' +  ///  list from prev. iterations
+                    `"`pp'"' +  ///  pair prefix
+                    `"`vp1'"' + `"`var1'"' + `"`vs1'"' +  ///  affixed var_1
+                    `"`vdel'"' +  ///  variable delimiter
+                    `"`vp2'"' + `"`var2'"' + `"`vs2'"' +  ///  affixed var_2
+                    `"`ps'"'  //  pair suffix only
+             }
 
             if "`generate'" != "" {
                 confirm new variable `var1'`gendelimiter'`var2'
@@ -140,8 +141,8 @@ program define varcomblist, rclass
     /* ----- return results -----*/    
     return scalar n_pr = `combinations'
     return scalar k = `vars'
-    if "`generate'" != "" return local newlist "`newlist'"
-    return local comblist `"`plist'"'
+    if "`generate'" != "" return local newlist = ustrtrim("`newlist'")
+    return local comblist `"`plist'"'  // NB: no trim to letz users to potz around w/ del's
     return local varlist  "`varlist'"
 
 
