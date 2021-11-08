@@ -1,0 +1,20 @@
+# ignore convenience 'start.do' file
+/start.do  
+    # opens helpfile in viewer & runs/logs examples from helpfile
+
+
+# ignore all folders beginning with period 
+# (but include files beginning with period; otherwise use ".*" )
+.*/
+
+
+# Log files & directories
+*.smcl
+*.log
+logs/
+
+
+# UE project files, macros, etc.
+*.prj
+*.pui
+*.mac
